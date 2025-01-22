@@ -1,0 +1,14 @@
+Debug
+Build
+x64
+ipch
+packages
+.vs
+.vscode
+*.sdf
+*.vc.db
+*.opensdf
+TestResults
+bin
+obj
+launchSettings.json
