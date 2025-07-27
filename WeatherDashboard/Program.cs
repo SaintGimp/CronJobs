@@ -7,6 +7,8 @@ var forecastLocationLon = Environment.GetEnvironmentVariable("ForecastLocationLo
 var deviceId = Environment.GetEnvironmentVariable("DeviceId", EnvironmentVariableTarget.Process) ?? "";
 var deviceAccessKey = Environment.GetEnvironmentVariable("DeviceAccessKey", EnvironmentVariableTarget.Process) ?? "";
 
+Console.WriteLine($"Starting job at {DateTime.Now}");
+
 var forecast = await GetForecast(forecastLocationLat, forecastLocationLon, openWeatherApiKey);
 await SendForecastToDevice(forecast, deviceId, deviceAccessKey);
 
@@ -64,5 +66,7 @@ async Task SendForecastToDevice(string forecast, string deviceId, string deviceA
 
     await ParticleCloud.SharedCloud.TokenLoginAsync(deviceAccessKey);
     var device = await ParticleCloud.SharedCloud.GetDeviceAsync(deviceId);
-    await device.RunFunctionAsync("display", forecast);
+    var functionResponse = await device.RunFunctionAsync("display", forecast);
+    
+    Console.WriteLine($"Response from device was {functionResponse.ReturnValue}");
 }
